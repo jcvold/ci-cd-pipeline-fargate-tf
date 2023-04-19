@@ -1,3 +1,7 @@
+data "aws_iam_role" "ecsCodeDeployRole" {
+  name = "ecsCodeDeployRole"
+}
+
 resource "aws_codedeploy_app" "tutorial-bluegreen-app" {
   compute_platform = "ECS"
   name             = "tutorial-bluegreen-app"
@@ -7,7 +11,7 @@ resource "aws_codedeploy_deployment_group" "tutorial-deployment-group" {
   app_name = aws_codedeploy_app.tutorial-bluegreen-app.name
   # deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
   deployment_group_name = "tutorial-bluegreen-dg"
-  service_role_arn      = aws_iam_role.example.arn
+  service_role_arn      = data.aws_iam_role.ecsCodeDeployRole.arn
 
   auto_rollback_configuration {
     enabled = true
